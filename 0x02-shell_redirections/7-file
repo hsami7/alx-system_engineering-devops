@@ -1,2 +1,16 @@
 #!/bin/bash
-echo "Best School" > \\\*\\\\"'\"Best School\"\\'\\\\\*\$\\\?\\\*\\\*\\\*\\\*\\\*\:\)
+
+# Create a temporary file with the desired name and contents
+echo "Best School" > /tmp/best_school
+
+# Replace the special characters in the filename with escaped versions
+escaped_filename=$(echo /tmp/best_school | sed 's/\\/\\\\/g')
+escaped_filename=$(echo $escaped_filename | sed 's/\*/\\*/g')
+escaped_filename=$(echo $escaped_filename | sed 's/\$/\\\\$/g')
+escaped_filename=$(echo $escaped_filename | sed 's/\?/\?\\/g')
+
+# Move the temporary file to the final location with the desired name
+mv /tmp/best_school $escaped_filename
+
+# Add a newline character to the end of the file
+echo "" >> $escaped_filename
