@@ -1,23 +1,33 @@
 #!/usr/bin/python3
-"""Script that prints out top ten hottest gists
-of a subreddit"""
 
-import requests
+"""
+prints the titles of the first 10 hot posts listed for a given subreddit
+"""
+
+from requests import get
 
 
 def top_ten(subreddit):
-    """Function that fetches top 10 gists"""
-    apiUrl = "https://reddit.com/r/{}/hot.json".format(subreddit)
-    userAgent = "Mozilla/5.0"
-    limits = 10
+    """
+    function that queries the Reddit API and prints the titles of the first
+    10 hot posts listed for a given subreddit
+    """
 
-    response = requests.get(
-        apiUrl, headers={"user-agent": userAgent}, params={"limit": limits})
-    if not response:
-        print('None')
-        return
-    response = response.json()
-    list_obj = response['data']['children']
-    for obj in list_obj:
-        print(obj['data']['title'])
-    return
+    if subreddit is None or not isinstance(subreddit, str):
+        print("None")
+
+    user_agent = {'User-agent': 'bhalut'}
+    params = {'limit': 10}
+    url = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
+
+    response = get(url, headers=user_agent, params=params)
+    results = response.json()
+
+    try:
+        my_data = results.get('data').get('children')
+
+        for i in my_data:
+            print(i.get('data').get('title'))
+
+    except Exception:
+        print("None")
